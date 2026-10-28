@@ -1,0 +1,6 @@
+stay_spend_annual.csv and capacity_annual.csv: 1985-2025 (41 years)
+Checks: Table 14 arrivals vs monthly series; receipts vs arrivals*stay*spend (flag if >5% apart)
+Notes:
+  - 2020: Table 14 arrivals 507,704 vs monthly sum 507,311
+  - 2006: receipts 410.3 vs arrivals*stay*spend 485.4 (+18%)
+  - 2022: receipts 1,136.3 vs arrivals*stay*spend 1,065.3 (-6%)

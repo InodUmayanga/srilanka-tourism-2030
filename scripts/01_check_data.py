@@ -1,5 +1,5 @@
-from tourism.data import load_arrivals
 import pandas as pd
+from tourism.data import load_arrivals, load_annual
 
 arrivals = load_arrivals()
 print("Type:", type(arrivals))
@@ -39,4 +39,21 @@ yearly = arrivals.groupby(arrivals.index.year).sum()
 print("\nYearly totals (last 8 years):")
 print(yearly.tail(8))
 
+
+print("\n--- ANNUAL FILES ---")
+capacity = load_annual("capacity_annual.csv")
+spend = load_annual("stay_spend_annual.csv")
+
+for name, df in [("capacity", capacity), ("stay_spend", spend)]:
+    print(f"\n{name}: years {df.index.min()}-{df.index.max()}, {len(df)} rows")
+    print("Missing values per column:")
+    print(df.isna().sum())
+
+# Cross-check: annual arrivals in stay_spend vs. totals from the monthly file
+compare = pd.DataFrame({"annual_file": spend["arrivals"], "monthly_sum": yearly})
+compare = compare.dropna()
+compare["difference"] = compare["annual_file"] - compare["monthly_sum"]
+print("\nYears where the two sources disagree:")
+print(compare[compare["difference"] != 0])
+assert list(compare[compare["difference"] != 0].index) == [2020], "Unexpected mismatch between sources"
 print("\nAll checks passed.")

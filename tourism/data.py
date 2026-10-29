@@ -6,3 +6,9 @@ def load_arrivals():
     df = pd.read_csv(DATA_PROCESSED / "arrivals_monthly_1971_2025.csv", parse_dates=["date"])
     df = df.set_index("date")
     return df["arrivals"]          # return only the arrivals column (a pandas Series)
+
+def load_annual(filename):
+    """Load an annual CSV (e.g. 'capacity_annual.csv') indexed by year."""
+    df = pd.read_csv(DATA_PROCESSED / filename)
+    df = df.set_index("year")
+    return df

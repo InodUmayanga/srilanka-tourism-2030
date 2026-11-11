@@ -24,3 +24,6 @@ Months from **April 2019 to December 2023** are treated as missing.
   Sri Lanka has only sustained this when rebounding from a crisis
   (2009–2014, 2020–2025) or in the early days of the industry (1970s).
 - Reaching **4 million** needs **11.1% a year**, close to the 2013–2018 average (12.9%).
+- STL decomposition (2010-01 to 2019-03) shows the underlying trend growth slowed
+  from about 23% a year (2011-2013) to 6-8% a year (2016-2018), well below the
+  11.1% needed for 4 million.

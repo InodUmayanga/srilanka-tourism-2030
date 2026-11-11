@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from tourism.paths import DATA_PROCESSED
 
@@ -12,3 +13,14 @@ def load_annual(filename):
     df = pd.read_csv(DATA_PROCESSED / filename)
     df = df.set_index("year")
     return df
+
+# Months disrupted by the Easter attacks, COVID-19 and the economic crisis (see README)
+DISRUPTED_START = "2019-04"
+DISRUPTED_END = "2023-12"
+
+
+def load_training_arrivals(start="2010-01", end="2025-12"):
+    """Monthly arrivals for model training, with disrupted months set to NaN (missing)."""
+    series = load_arrivals()[start:end].astype(float)
+    series.loc[DISRUPTED_START:DISRUPTED_END] = np.nan
+    return series

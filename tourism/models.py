@@ -80,6 +80,32 @@ def chronos2(train, horizon):
         id_column="id", timestamp_column="timestamp", target="target")
     return pd.Series(prediction["0.5"].values, index=future_index(train, horizon))
 
+_timesfm_model = None
+
+
+def timesfm(train, horizon):
+    """Google TimesFM 2.5, a pre-trained foundation model (zero-shot).
+    Its docs don't promise NaN support, so we join 2010-2018 to 2024+ as for Holt-Winters."""
+    global _timesfm_model
+    import torch
+    if _timesfm_model is None:
+        from transformers import TimesFm2_5ModelForPrediction
+        _timesfm_model = TimesFm2_5ModelForPrediction.from_pretrained(
+            "google/timesfm-2.5-200m-transformers", device_map="cpu")
+    clean = pd.concat([train[:"2018-12"], train["2024-01":]]).dropna()
+    history = torch.tensor(clean.values, dtype=torch.float32)
+    with torch.no_grad():
+        output = _timesfm_model(past_values=[history], return_dict=True)
+    values = output.mean_predictions[0, :horizon].numpy()   # it forecasts 128 steps; keep the first `horizon`
+    return pd.Series(values, index=future_index(train, horizon))
+
+
+def ensemble(train, horizon, members=("Holt-Winters damped", "SARIMA", "Chronos-2")):
+    """Average of several models' forecasts. Different models make different mistakes,
+    so averaging usually cancels part of the error."""
+    forecasts = [MODELS[name](train, horizon) for name in members]
+    return sum(forecasts) / len(forecasts)
+
 
 # name -> function, used by the comparison scripts
 MODELS = {
@@ -88,4 +114,8 @@ MODELS = {
     "Holt-Winters damped": holt_winters,
     "SARIMA": sarima,
     "Chronos-2": chronos2,
+    "TimesFM 2.5": timesfm,
 }
+MODELS["Ensemble (HW + SARIMA + Chronos-2)"] = ensemble
+MODELS["Ensemble (HW + SARIMA + Chronos-2 + TimesFM)"] = lambda train, horizon: ensemble(
+    train, horizon, members=("Holt-Winters damped", "SARIMA", "Chronos-2", "TimesFM 2.5"))

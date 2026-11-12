@@ -9,6 +9,8 @@ from tourism.metrics import mape
 from tourism.models import MODELS
 from tourism.paths import FIGURES, RESULTS
 
+pd.set_option("display.width", 200)
+pd.set_option("display.max_columns", None)    # never replace columns with "..."
 
 def backtest(start, years):
     """For each year: train on data from `start` up to the December before, forecast that year."""

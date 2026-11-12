@@ -1,6 +1,8 @@
 # Five Million by 2030? Forecasting Sri Lanka's Tourism Demand
 
-Can Sri Lanka reach its target of **5 million tourists a year by 2030** (or the alternative 4 million)?
+Source: [Sri Lanka Tourism Development Authority (SLTDA)](https://www.sltda.gov.lk) official statistics.
+
+Can Sri Lanka reach its target of **5 million tourists a year by 2030** ([Daily Mirror, 26 Aug 2026](https://www.dailymirror.lk/business-main/WTTC-projections-put-Sri-Lankas-US-10bn-tourism-target-a-decade-behind-schedule/245-348879)), or the alternative 4 million also reported ([Daily Mirror, 31 Aug 2026](https://www.dailymirror.lk/business-main/Sri-Lanka-crosses-1-5mn-tourist-arrival-milestone-eyes-2-5mn-and-2027-breakthrough/245-349108))?
 This project builds a 55-year monthly dataset from official SLTDA reports, compares classical
 statistical models with modern pre-trained neural forecasting models, tests the best one on sealed
 2026 data, and forecasts to 2030 with shock scenarios.
@@ -58,8 +60,9 @@ Combining models helps because they make different mistakes in different years.
 
 ### Sealed test (January-September 2026)
 - Final model: **13.4%** error (seasonal naive: 11.3%); the backtest had suggested 7.7%.
-- Arrivals fell 20-30% in **March-April 2026 when the Middle East war disrupted air transit routes**.
-  No model can foresee such events from past arrival numbers. Excluding those months, error was ~10%.
+- Arrivals fell 20-30% in **March-April 2026 when the Middle East war disrupted air transit routes**
+  ([Daily FT, 3 Apr 2026](https://www.ft.lk/front-page/Tourist-arrivals-dip-20-in-March-on-Mideast-war/44-790421); [Daily FT, 5 May 2026](https://www.ft.lk/front-page/April-tourist-arrivals-slip-to-weakest-so-far-in-2026/44-791438)).
+  No model can foresee such events from past arrival numbers. Excluding those months, error was 9.0%.
 - **Lesson:** in normal years the ensemble beats simple methods, but sudden shocks dominate forecast
   error. That is why the 2030 outlook includes shock scenarios.
 
@@ -102,3 +105,14 @@ figures/       all charts
 results/       all result tables
 run_all.py     runs everything in order
 ```
+
+## Sources
+- Data: [Sri Lanka Tourism Development Authority](https://www.sltda.gov.lk): Annual Statistical Reports 2020 and 2023,
+  Year in Review 2024 and 2025, weekly tourist arrivals reports 2026 (see `data/README.md` and `data/raw/manifest.csv`).
+- 5 million / US$10 billion target: [Daily Mirror, 26 August 2026](https://www.dailymirror.lk/business-main/WTTC-projections-put-Sri-Lankas-US-10bn-tourism-target-a-decade-behind-schedule/245-348879)
+- 4 million / US$8 billion target: [Daily Mirror, 31 August 2026](https://www.dailymirror.lk/business-main/Sri-Lanka-crosses-1-5mn-tourist-arrival-milestone-eyes-2-5mn-and-2027-breakthrough/245-349108)
+- March 2026 drop (-20%, Middle East war disrupting air routes): [Daily FT, 3 April 2026](https://www.ft.lk/front-page/Tourist-arrivals-dip-20-in-March-on-Mideast-war/44-790421)
+- April 2026 drop (-22%, Middle East tensions and aviation disruption): [Daily FT, 5 May 2026](https://www.ft.lk/front-page/April-tourist-arrivals-slip-to-weakest-so-far-in-2026/44-791438)
+
+## License
+Code is released under the [MIT License](LICENSE). Source data remain the property of SLTDA.

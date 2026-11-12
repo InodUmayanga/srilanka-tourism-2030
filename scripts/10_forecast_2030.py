@@ -55,7 +55,7 @@ for target in (4_000_000, 5_000_000):
 
 # ---- 6. Charts: monthly forecast with range, and annual totals vs targets ----
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 9))
-recent = history["2015-01":].dropna()
+recent = history["2015-01":]
 ax1.plot(recent.index, recent.values, linewidth=1, label="Actual (disrupted years left out)")
 ax1.plot(ensemble.index, ensemble.values, linestyle="--", label="Ensemble forecast")
 ax1.fill_between(ensemble.index, low, high, alpha=0.25, label="80% range (normal conditions)")

@@ -65,10 +65,27 @@ def sarima(train, horizon, order=(0, 1, 1), seasonal_order=(1, 1, 1, 12)):
     return pd.Series(np.exp(model.forecast(horizon).values), index=future_index(train, horizon))
 
 
+_chronos_pipeline = None      # loaded once, then reused (loading takes a few seconds)
+
+def chronos2(train, horizon):
+    """Amazon Chronos-2, a pre-trained foundation model. Zero-shot: no training on our data.
+    It reads the history (NaN months included) and returns the median forecast."""
+    global _chronos_pipeline
+    if _chronos_pipeline is None:
+        from chronos import Chronos2Pipeline
+        _chronos_pipeline = Chronos2Pipeline.from_pretrained("amazon/chronos-2", device_map="cpu")
+    context = pd.DataFrame({"id": "sri_lanka", "timestamp": train.index, "target": train.values})
+    prediction = _chronos_pipeline.predict_df(
+        context, prediction_length=horizon, quantile_levels=[0.1, 0.5, 0.9],
+        id_column="id", timestamp_column="timestamp", target="target")
+    return pd.Series(prediction["0.5"].values, index=future_index(train, horizon))
+
+
 # name -> function, used by the comparison scripts
 MODELS = {
     "Seasonal naive": seasonal_naive,
     "Regression": regression,
     "Holt-Winters damped": holt_winters,
     "SARIMA": sarima,
+    "Chronos-2": chronos2,
 }

@@ -24,3 +24,9 @@ def load_training_arrivals(start="2010-01", end="2025-12"):
     series = load_arrivals()[start:end].astype(float)
     series.loc[DISRUPTED_START:DISRUPTED_END] = np.nan
     return series
+
+def load_all_arrivals():
+    """Training series plus the 2026 months. Only for use after the sealed test (Step 13+)."""
+    recent = pd.read_csv(DATA_PROCESSED / "arrivals_monthly_2026.csv",
+                         parse_dates=["date"]).set_index("date")["arrivals"].astype(float)
+    return pd.concat([load_training_arrivals(), recent])

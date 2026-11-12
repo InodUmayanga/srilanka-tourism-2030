@@ -27,3 +27,12 @@ Months from **April 2019 to December 2023** are treated as missing.
 - STL decomposition (2010-01 to 2019-03) shows the underlying trend growth slowed
   from about 23% a year (2011-2013) to 6-8% a year (2016-2018), well below the
   11.1% needed for 4 million.
+
+### Sealed test (January-September 2026)
+The final model (4-model ensemble) was fixed before the 2026 data was opened.
+- Backtest (6 normal years): MAPE 7.7%
+- Sealed 2026 test: MAPE 13.4% (seasonal naive: 11.3%)
+- Arrivals fell 20-30% in March-April 2026 when the Middle East war disrupted
+  air transit routes. Excluding those two months, the error was about 10%.
+- Lesson: in normal years the ensemble beats simple methods, but sudden shocks
+  dominate forecast error. The 2030 outlook therefore includes shock scenarios.

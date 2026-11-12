@@ -80,6 +80,20 @@ def chronos2(train, horizon):
         id_column="id", timestamp_column="timestamp", target="target")
     return pd.Series(prediction["0.5"].values, index=future_index(train, horizon))
 
+def chronos2_quantiles(train, horizon, levels=(0.1, 0.5, 0.9)):
+    """Chronos-2 forecast range: one column per quantile (0.1 = low, 0.5 = median, 0.9 = high)."""
+    global _chronos_pipeline
+    if _chronos_pipeline is None:
+        from chronos import Chronos2Pipeline
+        _chronos_pipeline = Chronos2Pipeline.from_pretrained("amazon/chronos-2", device_map="cpu")
+    context = pd.DataFrame({"id": "sri_lanka", "timestamp": train.index, "target": train.values})
+    prediction = _chronos_pipeline.predict_df(
+        context, prediction_length=horizon, quantile_levels=list(levels),
+        id_column="id", timestamp_column="timestamp", target="target")
+    out = prediction[[str(q) for q in levels]]
+    out.index = future_index(train, horizon)
+    return out
+
 _timesfm_model = None
 
 

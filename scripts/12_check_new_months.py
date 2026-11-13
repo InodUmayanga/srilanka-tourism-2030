@@ -53,3 +53,6 @@ mape_2026 = ((actual_2026 - forecast_2026).abs() / actual_2026).mean() * 100
 print(f"\nEnsemble MAPE, January-October 2026: {mape_2026:.1f}%  (Jan-Sep was 13.4%)")
 print(f"Total: actual {actual_2026.sum():,.0f} vs forecast {forecast_2026.sum():,.0f} "
       f"({(forecast_2026.sum() / actual_2026.sum() - 1) * 100:+.1f}%)")
+
+# saved for the robustness figure (script 14)
+pd.DataFrame({"actual": actual_2026, "forecast": forecast_2026.round()}).rename_axis("date").to_csv(RESULTS / "forecast_vs_actual_2026.csv")

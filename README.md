@@ -81,6 +81,8 @@ the ensemble's error for January-October 2026 is **12.1%**, and its total foreca
 almost all from March-April. The forecast that starts the 2030 projection (trained to September 2026) missed
 October by +3.9%. Script: `scripts/12_check_new_months.py`.
 
+![Forecast vs actual, January-October 2026](figures/14_check_2026.png)
+
 **March-April 2026 treated as disrupted.** The main forecast keeps the shock months in training. Re-running it
 with them treated as missing (SARIMA, Chronos-2) or replaced by a no-shock estimate (Holt-Winters, TimesFM: the
 same months of 2025 scaled by +4.0%, the 2026 growth in unaffected months):
@@ -94,6 +96,8 @@ same months of 2025 scaled by +4.0%, the 2026 growth in unaffected months):
 
 The shock months hold the forecast down slightly, and the alternative forecast October more accurately, but
 neither version comes close to 4 million. Script: `scripts/13_robustness_shock_months.py`.
+
+![Robustness of the 2030 forecast](figures/15_robustness_2030.png)
 
 ## Modeling decisions
 - **Training window: January 2010 - latest month.** 1971-2009 reflects a much smaller, war-affected industry.

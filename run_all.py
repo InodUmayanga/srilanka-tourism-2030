@@ -4,7 +4,8 @@ from pathlib import Path
 
 SCRIPTS = ["01_check_data", "02_explore", "03_decompose", "04_baseline", "05_regression",
            "06_holt_winters", "07_sarima", "08_backtest", "09_test_2026",
-           "10_forecast_2030", "11_scenarios", "12_check_new_months", "13_robustness_shock_months"]
+           "10_forecast_2030", "11_scenarios", "12_check_new_months", "13_robustness_shock_months",
+           "14_robustness_figures"]
 
 for name in SCRIPTS:
     print(f"\n{'=' * 70}\nRunning {name}.py\n{'=' * 70}")

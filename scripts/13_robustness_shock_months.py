@@ -71,3 +71,6 @@ growth = ((f2030 * 1e6 / history["2025"].sum()) ** (1 / 5) - 1) * 100
 print(f"2030: {f2030:.2f} million (80% range {comparison.loc[2030, 'low 10% (M)']:.2f}-"
       f"{comparison.loc[2030, 'high 90% (M)']:.2f}), implied growth 2025-2030 {growth:.1f}% per year")
 print("4 million target:", "inside" if comparison.loc[2030, "high 90% (M)"] >= 4 else "outside", "the 80% range")
+
+# saved for the robustness figure (script 14)
+ensemble.rename("ensemble").rename_axis("date").to_csv(RESULTS / "robustness_monthly_forecast.csv")

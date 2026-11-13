@@ -12,6 +12,8 @@ statistical models with modern pre-trained neural forecasting models, tests the 
 - **4 million needs 14.7% growth every year from 2026; 5 million needs 21.2%.** Sri Lanka has only
   grown this fast when rebounding from a crisis.
 - Even a return to the **pre-COVID growth trend (7% a year) reaches about 3.0 million**.
+- **Robust to the 2026 shock:** excluding the March-April 2026 shock months from training raises the
+  2030 forecast only to about 2.5 million (80% range 1.8-3.3M), still well short of 4 million.
 - Shocks are frequent: arrivals fell more than 10% in **11 of the last 54 years**. Including that risk,
   there is a **55% chance 2030 ends below the 2025 level** under current momentum.
 
@@ -70,6 +72,28 @@ Combining models helps because they make different mistakes in different years.
 
 ### Forecast to 2030
 ![Forecast to 2030](figures/12_forecast_2030.png)
+
+### Robustness checks
+
+**New data since the sealed test (September-October 2026).** A forecast made with data to December 2025
+missed September by -1.2% and October by -0.9% (October actual 168,625, a record October). Including October,
+the ensemble's error for January-October 2026 is **12.1%**, and its total forecast was 4.5% above actual,
+almost all from March-April. The forecast that starts the 2030 projection (trained to September 2026) missed
+October by +3.9%. Script: `scripts/12_check_new_months.py`.
+
+**March-April 2026 treated as disrupted.** The main forecast keeps the shock months in training. Re-running it
+with them treated as missing (SARIMA, Chronos-2) or replaced by a no-shock estimate (Holt-Winters, TimesFM: the
+same months of 2025 scaled by +4.0%, the 2026 growth in unaffected months):
+
+| | Main forecast | Shock months disrupted |
+|---|---|---|
+| 2030 arrivals | 2.42M | 2.52M (+4.2%) |
+| 80% range | 1.77-3.15M | 1.81-3.34M |
+| Growth 2025-2030 | 0.4% a year | 1.3% a year |
+| October 2026 error | +3.9% | +2.2% |
+
+The shock months hold the forecast down slightly, and the alternative forecast October more accurately, but
+neither version comes close to 4 million. Script: `scripts/13_robustness_shock_months.py`.
 
 ## Modeling decisions
 - **Training window: January 2010 - latest month.** 1971-2009 reflects a much smaller, war-affected industry.
